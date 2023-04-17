@@ -1,0 +1,63 @@
+CREATE TABLE students
+(student_id serial PRIMARY KEY,
+first_name VARCHAR(50) NOT NULL,
+last_name VARCHAR(50) NOT NULL,
+homeroom_number INTEGER,
+phone VARCHAR(20) UNIQUE NOT NULL,
+email VARCHAR(100) UNIQUE NOT NULL,
+grad_year INTEGER
+);
+
+
+CREATE TABLE teachers
+(teacher_id SERIAL PRIMARY KEY,
+first_name VARCHAR(20) NOT NULL,
+last_name VARCHAR(20) NOT NULL,
+homeroom_number integer,
+department VARCHAR(50),
+email VARCHAR(25) UNIQUE,
+phone VARCHAR(20) UNIQUE);
+
+
+INSERT INTO students(student_id, first_name,last_name,homeroom_number,phone,email,grad_year)
+VALUES
+('1','Sam','Smith','205','7247241234','Ssmith@school.org','2023'),
+('2','Mark','Halt','305','7247241284','Mhalt@school.org','2024'),
+('3','Jason','Leone','205','7243331111','Jleone@school.org','2023'),
+('4','Mary','Scott','405','7244446767','Mscott@school.org','2025'),
+('5','Autumn','Haines','305','7243353344','Ahaines@school.org','2024'),
+('6','Jenna','Morris','405','7242288998','Jmorris@school.org','2025'),
+('7','James','Zot','205','7245567788','Jzot@school.org','2023'),
+('8','Falan','Watney','205','7240009991','Fwatney@school.org','2023');
+
+INSERT INTO teachers(teacher_id,first_name,last_name,homeroom_number,department,email,phone)
+VALUES
+('1','Maureen','Cinco','205','Biology','Mcinco@school.org','1234454467'),
+('2','Tony','White','305','Math','Twhite@school.org','1234458899'),
+('3','Nathan','Jones','405','English','Njones@school.org','1234450000');
+
+*** How many students are in homeroom number 205? ***
+SELECT COUNT (*)
+FROM students
+WHERE homeroom_number = 205
+
+*** Pull up a list of students in Ms.Cinco's homeroom ***
+SELECT students.first_name, students.last_name
+FROM students
+LEFT  JOIN teachers
+ON students.homeroom_number = teachers.homeroom_number
+WHERE teachers.last_name ='Cinco'
+
+*** Pull a list of students next to their last name in one column with an alias and with a space in between.***
+SELECT CONCAT(first_name,' ',last_name) AS full_name
+FROM students;
+
+*** Categorize each student with class status in a new column based on graduation year displaying Seniors first***
+SELECT first_name, grad_year,
+CASE 
+  WHEN (grad_year = 2023) THEN 'Senior'
+  WHEN (grad_year = 2024) THEN 'Junior'
+  ELSE 'Underclass'
+  END AS class_status
+FROM students
+ORDER BY grad_year 
