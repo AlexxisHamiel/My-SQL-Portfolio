@@ -1,0 +1,60 @@
+CREATE TABLE clothing(
+id INTEGER PRIMARY KEY,
+name TEXT,
+cost INTEGER,
+color TEXT,
+quantity INTEGER,
+Serial_number INTEGER )
+
+ALTER TABLE clothing
+ADD COLUMN category TEXT;
+
+INSERT INTO clothing (id,name,cost,color,quantity,serial_number,category)
+VALUES
+('1','blouse','20','pink','15','12345678','tops'),
+('2','jeans','15','blue','10','12349875','bottoms'),
+('3', 'sandals', '10', 'black', '5', '12347898', 'shoes'),
+('4', 'cardigan', '25', 'tan', '20', '12349867', 'tops'),
+('5', 'skirt', '14', 'green', '4', '12349871', 'bottoms'),
+('6', 'tshirt', '13', 'red', '25', '12349612', 'tops'),
+('7', 'boots', '30', 'brown', '10', '12347826', 'shoes'),
+('8', 'blazer', '20', 'orange', '15', '12345588', 'tops'),
+('9', 'shorts', '5', 'gray', '8', '12345699', 'bottoms'),
+('10', 'heels', '15', 'white', '5', '12346679', 'shoes'),
+('11', 'joggers', '10', 'black', '9', '12349672', 'bottoms'),
+('12', 'sneakers', '25', 'purple', '6', '12345511', 'shoes'),
+('13', 'vest', '20', 'brown', '4', '12346693', 'tops'),
+('14', 'dress', '17', 'yellow', '6','12341128'),
+('15', 'jumpsuit','20', 'rainbow', '2', '12347779');
+
+*** What is the total cost of in items of all orange tops? ***
+
+SELECT SUM(cost * quantity)
+FROM clothing
+GROUP BY color, category
+HAVING color = 'orange' AND category = 'tops'
+
+*** Pull up the items where the serial number ends in 7826 ***
+
+SELECT name
+FROM clothing
+WHERE serial_number LIKE '%7826';
+
+*** What is the average cost of all shoes? ***
+
+SELECT ROUND(AVG(cost),2)
+FROM clothing
+GROUP BY category
+HAVING category = 'shoes'
+
+*** How many different pieces of clothing does this store sell? ***
+
+SELECT COUNT (DISTINCT name)
+FROM clothing
+
+*** Get all items that cost $10 or more ***
+
+SELECT name, cost
+FROM clothing
+WHERE cost >='10'
+ORDER BY cost
